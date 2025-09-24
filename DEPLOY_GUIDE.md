@@ -40,7 +40,7 @@
    - Clique em "Connect" no seu cluster
    - Escolha "Connect your application"
    - Copie a string de conexão
-   - Exemplo: `mongodb+srv://usuario:senha@cluster.mongodb.net/bondegusto`
+   - Exemplo: `mongodb+srv://usuario:senha@cluster.mongodb.net/`
 
 ### 3. Deploy no Vercel
 

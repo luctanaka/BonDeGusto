@@ -70,7 +70,8 @@ dist
 
 # Gatsby files
 .cache/
-public
+# public - commented out to allow React public folder
+# public
 
 # Storybook build outputs
 .out
@@ -99,4 +100,4 @@ Thumbs.db
 # Vercel
 .vercel
 
-index.html
+index_V1.html
