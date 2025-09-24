@@ -56,7 +56,7 @@
 
    **Para o Frontend:**
    ```
-   REACT_APP_API_URL = https://SEU_DOMINIO.vercel.app/api
+   REACT_APP_API_URL = https://bondegusto.com.br/api
    REACT_APP_API_TIMEOUT = 15000
    REACT_APP_NAME = Bondegusto Restaurant
    REACT_APP_VERSION = 1.0.0
@@ -89,10 +89,10 @@
 
 ### 4. Configurações Pós-Deploy
 
-1. **Atualizar REACT_APP_API_URL:**
-   - Após o primeiro deploy, você terá o domínio final
-   - Atualize a variável `REACT_APP_API_URL` com o domínio correto
-   - Exemplo: `https://bondegusto-restaurant.vercel.app/api`
+1. **Configurar domínio personalizado:**
+   - Após o primeiro deploy, configure o domínio bondegusto.com.br
+   - A variável `REACT_APP_API_URL` já está configurada para `https://bondegusto.com.br/api`
+   - Siga as instruções da seção "Configurar Domínio Personalizado" abaixo
 
 2. **Testar funcionalidades:**
    - Acesse o site
@@ -100,12 +100,43 @@
    - Teste o sistema de avaliações
    - Verifique o painel administrativo
 
-### 5. Domínio Personalizado (Opcional)
+### 5. Configurar Domínio Personalizado (bondegusto.com.br)
 
-1. **Configurar domínio próprio:**
-   - No Vercel, vá em "Settings" > "Domains"
-   - Adicione seu domínio personalizado
-   - Configure os DNS conforme instruções do Vercel
+1. **Adicionar domínio no Vercel:**
+   - No dashboard do Vercel, vá em "Settings" > "Domains"
+   - Clique em "Add Domain"
+   - Digite: `bondegusto.com.br`
+   - Clique em "Add"
+
+2. **Configurar DNS no seu provedor de domínio:**
+   - Acesse o painel do seu provedor de domínio (onde você registrou bondegusto.com.br)
+   - Vá para as configurações de DNS
+   - Adicione os seguintes registros:
+
+   **Para o domínio principal (bondegusto.com.br):**
+   ```
+   Tipo: A
+   Nome: @
+   Valor: 76.76.19.61
+   TTL: 3600
+   ```
+
+   **Para www (www.bondegusto.com.br):**
+   ```
+   Tipo: CNAME
+   Nome: www
+   Valor: cname.vercel-dns.com
+   TTL: 3600
+   ```
+
+3. **Verificar configuração:**
+   - Aguarde a propagação DNS (pode levar até 48 horas)
+   - No Vercel, você verá um status "Valid Configuration" quando estiver funcionando
+   - Teste acessando https://bondegusto.com.br
+
+4. **Configurar redirecionamento (opcional):**
+   - Configure www.bondegusto.com.br para redirecionar para bondegusto.com.br
+   - Ou vice-versa, conforme sua preferência
 
 ## Estrutura de Arquivos Criada
 
