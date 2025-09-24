@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Star, WifiX, CheckCircle, XCircle } from '@phosphor-icons/react';
+import { WifiX, CheckCircle } from '@phosphor-icons/react';
 import reviewService from '../services/reviewService';
 import useDatabase from '../hooks/useDatabase';
 
@@ -13,47 +13,10 @@ const Avaliacoes = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
-  const [reviews, setReviews] = useState([]);
-  const [reviewStats, setReviewStats] = useState(null);
-  const [loadingReviews, setLoadingReviews] = useState(true);
+
   
   // Database connection hook
   const { isConnected, isLoading: dbLoading, getStatusMessage, retryConnection } = useDatabase();
-
-  // Load reviews and stats when component mounts or connection is established
-  useEffect(() => {
-    if (isConnected) {
-      loadReviews();
-      loadReviewStats();
-    }
-  }, [isConnected]);
-
-  // Load reviews from database
-  const loadReviews = async () => {
-    try {
-      setLoadingReviews(true);
-      const reviewsData = await reviewService.getReviews({ limit: 10 });
-      setReviews(reviewsData.reviews || []);
-    } catch (error) {
-      console.error('Error loading reviews:', error);
-      setReviews([]);
-    } finally {
-      setLoadingReviews(false);
-    }
-  };
-
-  // Load review statistics
-  const loadReviewStats = async () => {
-    try {
-      const stats = await reviewService.getReviewStats();
-      setReviewStats(stats);
-    } catch (error) {
-      console.error('Error loading review stats:', error);
-      setReviewStats(null);
-    }
-  };
-
-
 
   const handleStarClick = (rating) => {
     setUserRating(rating);
@@ -111,9 +74,7 @@ const Avaliacoes = () => {
         setReviewForm({ name: '', email: '', comment: '' });
         setUserRating(0);
         
-        // Reload reviews and stats
-        loadReviews();
-        loadReviewStats();
+        // Reviews would be reloaded here in a full implementation
       } else {
         setSubmitStatus('error');
       }

@@ -3,7 +3,7 @@ import { useAdminAuth } from '../hooks/useAdminAuth';
 import AdminLogin from '../components/AdminLogin';
 
 const SecretAdminLogin = () => {
-  const { adminUser, login } = useAdminAuth();
+  const { adminUser } = useAdminAuth();
   const [showLogin, setShowLogin] = useState(true);
   const [accessAttempts, setAccessAttempts] = useState(0);
   const [isBlocked, setIsBlocked] = useState(false);
@@ -20,7 +20,7 @@ const SecretAdminLogin = () => {
     const logAccess = () => {
       const timestamp = new Date().toISOString();
       const userAgent = navigator.userAgent;
-      const ip = 'client-side'; // Would be logged server-side in production
+      // IP would be logged server-side in production
       
       console.warn(`[SECURITY] Admin login page accessed at ${timestamp}`);
       console.warn(`[SECURITY] User Agent: ${userAgent}`);

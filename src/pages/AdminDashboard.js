@@ -22,7 +22,7 @@ const AdminDashboard = () => {
     } else {
       setShowLogin(true);
     }
-  }, [adminUser]);
+  }, [adminUser, isAuthenticated]);
 
   const loadDashboardStats = async () => {
     setLoading(true);

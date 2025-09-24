@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import adminService from '../services/adminService';
 
 const ReviewManagement = () => {
@@ -9,11 +9,7 @@ const ReviewManagement = () => {
   const [selectedReview, setSelectedReview] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
-  useEffect(() => {
-    loadReviews();
-  }, []);
-
-  const loadReviews = async () => {
+  const loadReviews = useCallback(async () => {
     setLoading(true);
     try {
       const reviewsData = await adminService.getReviews();
@@ -25,7 +21,11 @@ const ReviewManagement = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadReviews();
+  }, [loadReviews]);
 
   const handleStatusChange = async (reviewId, newStatus) => {
     try {

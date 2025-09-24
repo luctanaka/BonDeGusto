@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import adminService from '../services/adminService';
 
 const UserManagement = () => {
@@ -39,12 +39,7 @@ const UserManagement = () => {
     { key: 'porto-alegre', name: 'Porto Alegre' }
   ];
 
-  useEffect(() => {
-    fetchUsers();
-    fetchUserStats();
-  }, [currentPage, searchTerm]);
-
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     try {
       setLoading(true);
       const params = {
@@ -61,16 +56,21 @@ const UserManagement = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage, searchTerm]);
 
-  const fetchUserStats = async () => {
+  const fetchUserStats = useCallback(async () => {
     try {
       const stats = await adminService.getUserStats();
       setUserStats(stats);
     } catch (err) {
       console.error('Error fetching user stats:', err);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchUsers();
+    fetchUserStats();
+  }, [currentPage, searchTerm, fetchUsers, fetchUserStats]);
 
   const handleCreateUser = async (e) => {
     e.preventDefault();
