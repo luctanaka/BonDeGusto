@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { WifiX, CheckCircle } from '@phosphor-icons/react';
 import reviewService from '../services/reviewService';
 import useDatabase from '../hooks/useDatabase';

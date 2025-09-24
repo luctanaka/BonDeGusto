@@ -116,37 +116,7 @@ function App() {
     }, 1000);
   };
 
-  const showUnauthorizedAccessWarning = () => {
-    // Create warning toast
-    const toast = document.createElement('div');
-    toast.className = 'fixed top-4 right-4 bg-red-600 text-white px-6 py-4 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform duration-300 max-w-sm';
-    toast.innerHTML = `
-      <div class="flex items-center gap-3">
-        <i class="ph ph-shield-warning text-xl"></i>
-        <div>
-          <p class="font-semibold">Acesso Negado</p>
-          <p class="text-sm opacity-90">Área restrita a administradores</p>
-        </div>
-      </div>
-    `;
-    
-    document.body.appendChild(toast);
-    
-    // Animate in
-    setTimeout(() => {
-      toast.style.transform = 'translateX(0)';
-    }, 100);
-    
-    // Remove after 4 seconds
-    setTimeout(() => {
-      toast.style.transform = 'translateX(100%)';
-      setTimeout(() => {
-        if (toast.parentNode) {
-          toast.parentNode.removeChild(toast);
-        }
-      }, 300);
-    }, 4000);
-  };
+
 
   const renderCurrentPage = () => {
     switch (currentPage) {

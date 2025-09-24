@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import adminService from '../services/adminService';
 
 const GalleryManagement = () => {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [uploading, setUploading] = useState(false);
+
   const [showForm, setShowForm] = useState(false);
   const [editingImage, setEditingImage] = useState(null);
   const [formData, setFormData] = useState({
@@ -26,11 +26,7 @@ const GalleryManagement = () => {
     { value: 'outros', label: 'Outros' }
   ];
 
-  useEffect(() => {
-    loadImages();
-  }, []);
-
-  const loadImages = async () => {
+  const loadImages = useCallback(async () => {
     setLoading(true);
     try {
       const imagesData = await adminService.getGalleryImages();
@@ -41,7 +37,11 @@ const GalleryManagement = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadImages();
+  }, [loadImages]);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;

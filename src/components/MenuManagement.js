@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import adminService from '../services/adminService';
 
 const MenuManagement = () => {
@@ -24,11 +24,7 @@ const MenuManagement = () => {
     { value: 'especial', label: 'Especiais' }
   ];
 
-  useEffect(() => {
-    loadMenuItems();
-  }, []);
-
-  const loadMenuItems = async () => {
+  const loadMenuItems = useCallback(async () => {
     setLoading(true);
     try {
       const items = await adminService.getMenuItems();
@@ -39,7 +35,11 @@ const MenuManagement = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadMenuItems();
+  }, [loadMenuItems]);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
