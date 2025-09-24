@@ -29,26 +29,6 @@ This backend is configured with MongoDB Atlas using Mongoose for optimal perform
 
 The following environment variables are configured in `.env`:
 
-```env
-# Database
-MONGODB_URI=mongodb+srv://Vercel-Admin-Atlas-BomDeGusto:3sO0iKPkvSsivzoE@atlas-bomdegusto.mglbuhf.mongodb.net/?retryWrites=true&w=majority
-
-# Server Configuration
-PORT=5000
-NODE_ENV=development
-
-# Frontend Integration
-FRONTEND_URL=http://localhost:3001
-
-# Security
-JWT_SECRET=your-super-secret-jwt-key-change-in-production
-JWT_EXPIRE=7d
-
-# Rate Limiting
-RATE_LIMIT_WINDOW_MS=900000
-RATE_LIMIT_MAX_REQUESTS=100
-```
-
 ### Database Models
 
 #### Review Model

@@ -49,7 +49,11 @@ const corsOptions = {
     process.env.FRONTEND_URL || 'http://localhost:3001',
     'http://localhost:3000', // Default React dev server
     'http://127.0.0.1:3001',
-    'http://127.0.0.1:3000'
+    'http://127.0.0.1:3000',
+    'https://bon-de-gusto-website.vercel.app',
+    'https://bondegusto.com.br',
+    'https://www.bondegusto.com.br',
+    /https:\/\/bon-de-gusto-website-.*\.vercel\.app$/
   ],
   credentials: true,
   optionsSuccessStatus: 200,
