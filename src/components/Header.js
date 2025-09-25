@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import logo from '../assets/MARCA BONDEGUSTO SEM FUNDON HORIZ 2.png';
 const Header = ({ currentPage, onNavigate, onToggleTheme, onOpenLogin, currentUser, onLogout, adminUser }) => {
   const [showUserMenu, setShowUserMenu] = useState(false);
 
@@ -47,7 +47,7 @@ const Header = ({ currentPage, onNavigate, onToggleTheme, onOpenLogin, currentUs
           {/* Logo */}
           <div className="flex items-center justify-start flex-shrink-0 -ml-3 sm:-ml-10 md:-ml-20 mt-0 sm:-mt-2 md:-mt-5">
             <img 
-              src="MARCA BONDEGUSTO SEM FUNDON HORIZ 2.png" 
+              src={logo}
               alt="Logo Bondegusto"
               className="h-56 sm:h-40 md:h-80 lg:h-92 w-auto object-contain max-w-full"
             />
