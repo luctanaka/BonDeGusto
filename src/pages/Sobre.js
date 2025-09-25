@@ -24,33 +24,6 @@ const Sobre = () => {
     }
   ];
 
-  const team = [
-    {
-      name: 'Chef Roberto Silva',
-      position: 'Chef Executivo',
-      image: 'https://images.unsplash.com/photo-1583394293214-28a5b0a8e8b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-      description: 'Com mais de 20 anos de experiência, Roberto é especialista em culinária brasileira contemporânea.'
-    },
-    {
-      name: 'Ana Martins',
-      position: 'Gerente Geral',
-      image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-      description: 'Ana coordena todas as operações do restaurante, garantindo a excelência no atendimento.'
-    },
-    {
-      name: 'Carlos Mendes',
-      position: 'Sommelier',
-      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-      description: 'Especialista em harmonização, Carlos seleciona os melhores vinhos para acompanhar nossos pratos.'
-    },
-    {
-      name: 'Fernanda Costa',
-      position: 'Chef Confeiteira',
-      image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-      description: 'Responsável pelas sobremesas artesanais que encantam nossos clientes há mais de 10 anos.'
-    }
-  ];
-
   const timeline = [
     {
       year: '2003',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPinIcon, PhoneIcon, ClockIcon, EnvelopeIcon, InstagramLogoIcon, FacebookLogoIcon } from '@phosphor-icons/react';
+import { PhoneIcon, ClockIcon, EnvelopeIcon, InstagramLogoIcon, FacebookLogoIcon } from '@phosphor-icons/react';
 
 const Footer = () => {
   return (
@@ -21,14 +21,18 @@ const Footer = () => {
             {/* Social Media */}
             <div className="flex space-x-4">
               <a 
-                href="#" 
+                href="https://instagram.com/bondegusto" 
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-400 hover:text-primary transition-colors duration-200"
                 aria-label="Instagram"
               >
                 <InstagramLogoIcon size={24} />
               </a>
               <a 
-                href="#" 
+                href="https://facebook.com/bondegusto" 
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-400 hover:text-primary transition-colors duration-200"
                 aria-label="Facebook"
               >
@@ -109,18 +113,18 @@ const Footer = () => {
             </div>
             
             <div className="flex space-x-6 text-sm">
-              <a 
-                href="#" 
+              <button 
                 className="text-gray-400 hover:text-white transition-colors duration-200"
+                onClick={() => alert('Política de Privacidade em desenvolvimento')}
               >
                 Política de Privacidade
-              </a>
-              <a 
-                href="#" 
+              </button>
+              <button 
                 className="text-gray-400 hover:text-white transition-colors duration-200"
+                onClick={() => alert('Termos de Uso em desenvolvimento')}
               >
                 Termos de Uso
-              </a>
+              </button>
             </div>
           </div>
         </div>
