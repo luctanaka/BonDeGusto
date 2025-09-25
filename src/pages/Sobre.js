@@ -218,7 +218,7 @@ const Sobre = () => {
         </div>
       </section>
 
-      {/* Team */}
+      {/* Team
       <section>
         <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white text-center mb-12">
           Nossa Equipe
@@ -248,9 +248,9 @@ const Sobre = () => {
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
 
-      {/* Statistics */}
+      {/* Statistics
       <section className="bg-gradient-to-r from-primary to-orange-600 rounded-2xl p-8 md:p-12 text-white">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
           Bondegusto em Números
@@ -273,7 +273,7 @@ const Sobre = () => {
             <div className="text-lg opacity-90">Colaboradores</div>
           </div>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 };

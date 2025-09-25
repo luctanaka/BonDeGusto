@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
+import Footer from './components/Footer';
+import WhatsAppButton from './components/WhatsAppButton';
 import MobileNavigation from './components/MobileNavigation';
 import LoginModal from './components/LoginModal';
 import Entrada from './pages/Entrada';
@@ -175,6 +177,11 @@ function App() {
           {renderCurrentPage()}
         </div>
       </main>
+      
+      <Footer />
+      
+      {/* WhatsApp Floating Button */}
+      <WhatsAppButton />
       
       {/* Mobile Navigation - Always visible */}
       <MobileNavigation 

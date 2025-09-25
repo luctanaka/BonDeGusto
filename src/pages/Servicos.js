@@ -8,18 +8,7 @@ const Servicos = () => {
       description: 'Ambiente aconchegante com pratos tradicionais e contemporâneos preparados com ingredientes frescos.',
       features: ['Cardápio variado', 'Ambiente climatizado', 'Wi-Fi gratuito', 'Estacionamento']
     },
-    {
-      icon: 'ph-truck',
-      title: 'Delivery',
-      description: 'Entregamos nossos pratos especiais no conforto da sua casa com rapidez e qualidade.',
-      features: ['Entrega rápida', 'Embalagem térmica', 'Rastreamento online', 'Taxa grátis acima de R$ 50']
-    },
-    {
-      icon: 'ph-calendar-check',
-      title: 'Eventos',
-      description: 'Organizamos eventos especiais, aniversários, confraternizações e celebrações corporativas.',
-      features: ['Cardápio personalizado', 'Decoração inclusa', 'Serviço de garçons', 'Som ambiente']
-    },
+
     {
       icon: 'ph-graduation-cap',
       title: 'Buffet',
@@ -80,25 +69,6 @@ const Servicos = () => {
         ))}
       </div>
 
-      {/* CTA Section */}
-      <div className="bg-gradient-to-r from-primary to-orange-600 rounded-2xl p-8 md:p-12 text-center text-white">
-        <h2 className="text-3xl md:text-4xl font-bold mb-4">
-          Pronto para uma experiência única?
-        </h2>
-        <p className="text-xl mb-8 opacity-90">
-          Entre em contato conosco e descubra como podemos tornar seu evento inesquecível
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button className="bg-white text-primary hover:bg-gray-100 font-semibold py-3 px-8 rounded-lg transition-colors">
-            <i className="ph ph-phone mr-2"></i>
-            Ligar Agora
-          </button>
-          <button className="bg-transparent border-2 border-white hover:bg-white hover:text-primary font-semibold py-3 px-8 rounded-lg transition-colors">
-            <i className="ph ph-envelope mr-2"></i>
-            Enviar Email
-          </button>
-        </div>
-      </div>
     </div>
   );
 };
