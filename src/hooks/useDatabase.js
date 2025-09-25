@@ -70,14 +70,9 @@ const useDatabase = () => {
     }
   }, []);
 
-  // Auto-check connection on mount and set up periodic checks
+  // Check connection only on mount (no periodic checks)
   useEffect(() => {
     checkConnection();
-    
-    // Set up periodic health checks every 30 seconds
-    const interval = setInterval(checkConnection, 30000);
-    
-    return () => clearInterval(interval);
   }, [checkConnection]);
 
   // Manual retry function

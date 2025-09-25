@@ -109,18 +109,7 @@ const Cardapio = () => {
     }
   }, [isConnected, loadDailyMenu, loadWeeklyMenu, viewMode, currentWeekOffset]);
   
-  // Reload menu every minute to check for new day
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const now = new Date();
-      if (now.getDate() !== currentDate.getDate()) {
-        setCurrentDate(now);
-        loadDailyMenu(false, now); // Reload without showing loading spinner
-      }
-    }, 60000); // Check every minute
-    
-    return () => clearInterval(interval);
-  }, [currentDate, loadDailyMenu]);
+  // Removed automatic menu reload - menu will update when user navigates or refreshes page
   
   // Also load menu on component mount
   useEffect(() => {
