@@ -24,38 +24,7 @@ const Sobre = () => {
     }
   ];
 
-  const timeline = [
-    {
-      year: '2003',
-      title: 'Fundação',
-      description: 'O Bondegusto nasce como um pequeno restaurante familiar no coração de São Paulo.'
-    },
-    {
-      year: '2008',
-      title: 'Expansão',
-      description: 'Primeira reforma e ampliação do espaço, dobrando nossa capacidade de atendimento.'
-    },
-    {
-      year: '2012',
-      title: 'Reconhecimento',
-      description: 'Recebemos nosso primeiro prêmio de "Melhor Restaurante Regional" da cidade.'
-    },
-    {
-      year: '2016',
-      title: 'Modernização',
-      description: 'Implementação de tecnologias modernas e renovação completa do ambiente.'
-    },
-    {
-      year: '2020',
-      title: 'Delivery',
-      description: 'Lançamento do serviço de delivery, adaptando-nos aos novos tempos.'
-    },
-    {
-      year: '2024',
-      title: 'Presente',
-      description: 'Continuamos inovando e mantendo nossa tradição de excelência gastronômica.'
-    }
-  ];
+
 
   return (
     <div className="space-y-12">
