@@ -1,5 +1,4 @@
 const express = require('express');
-const authRoutes = require('./auth');
 const menuRoutes = require('./menu');
 const galleryRoutes = require('./gallery');
 const reviewsRoutes = require('./reviews');
@@ -20,9 +19,6 @@ router.get('/health', (req, res) => {
     version: '1.0.0'
   });
 });
-
-// Authentication routes (IP-authorized)
-router.use('/auth', authRoutes);
 
 // Admin routes (IP-authorized with full access)
 router.use('/menu', menuRoutes);

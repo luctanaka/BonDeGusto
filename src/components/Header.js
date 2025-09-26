@@ -13,19 +13,7 @@ const Header = ({ currentPage, onNavigate, onToggleTheme, onOpenLogin, currentUs
     { id: 'sobre', icon: 'ph-info', label: 'Sobre' }
   ];
 
-  const getLocationName = (locationKey) => {
-    const locations = {
-      'sao-paulo': 'São Paulo - SP',
-      'rio-de-janeiro': 'Rio de Janeiro - RJ',
-      'belo-horizonte': 'Belo Horizonte - MG',
-      'brasilia': 'Brasília - DF',
-      'salvador': 'Salvador - BA',
-      'fortaleza': 'Fortaleza - CE',
-      'recife': 'Recife - PE',
-      'porto-alegre': 'Porto Alegre - RS'
-    };
-    return locations[locationKey] || locationKey;
-  };
+
 
   const handleUserMenuToggle = () => {
     if (currentUser) {
@@ -56,7 +44,14 @@ const Header = ({ currentPage, onNavigate, onToggleTheme, onOpenLogin, currentUs
           {/* Desktop Navigation - Always visible */}
           <nav className="hidden md:flex items-center justify-center gap-4 absolute left-1/2 transform -translate-x-1/2">
             {navigationItems
-              .filter(item => item.id !== 'cardapio' || currentUser)
+              .filter(item => {
+                // Show cardapio only if user is logged in
+                if (item.id === 'cardapio') return currentUser && currentUser.id;
+                // Show avaliacoes only if user is logged in
+                if (item.id === 'avaliacoes') return currentUser && currentUser.id;
+                // Show all other items
+                return true;
+              })
               .map((item) => (
               <button
                 key={item.id}
@@ -108,7 +103,7 @@ const Header = ({ currentPage, onNavigate, onToggleTheme, onOpenLogin, currentUs
                   <div className="px-4 py-2 border-b border-slate-200 dark:border-slate-700">
                     <p className="text-sm font-medium text-slate-900 dark:text-white">{currentUser.email}</p>
                     <p className="text-xs text-slate-500 dark:text-slate-400">
-                      Localização: {getLocationName(currentUser.location)}
+                      Unidade: {currentUser.unit?.name || 'N/A'}
                     </p>
                   </div>
                   <button

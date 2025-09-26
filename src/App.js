@@ -12,7 +12,7 @@ import Contato from './pages/Contato';
 import Avaliacoes from './pages/Avaliacoes';
 import Sobre from './pages/Sobre';
 import AdminDashboard from './pages/AdminDashboard';
-import SecretAdminLogin from './pages/SecretAdminLogin';
+
 import { useTheme } from './hooks/useTheme';
 import { useAuth } from './hooks/useAuth';
 import { useAdminAuth } from './hooks/useAdminAuth';
@@ -41,9 +41,7 @@ function App() {
       const path = window.location.pathname;
       
       // Check for admin routes in URL
-      if (hash === 'admin-secret-login' || path.includes('/admin-secret-login')) {
-        setCurrentPage('admin-secret-login');
-      } else if (hash === 'admin' || path.includes('/admin')) {
+       if (hash === 'admin' || path.includes('/admin')) {
         setCurrentPage('admin');
       } else if (hash && ['entrada', 'cardapio', 'servicos', 'galeria', 'contato', 'avaliacoes', 'sobre'].includes(hash)) {
         setCurrentPage(hash);
@@ -73,9 +71,7 @@ function App() {
     setCurrentPage(page);
     
     // Update URL hash for navigation
-    if (page !== 'admin-secret-login') {
-      window.location.hash = page;
-    }
+    window.location.hash = page;
     
     // Scroll to top
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -153,8 +149,7 @@ function App() {
           return <Entrada />;
         }
         return <AdminDashboard />;
-      case 'admin-secret-login':
-        return <SecretAdminLogin />;
+
       default:
         return <Entrada />;
     }

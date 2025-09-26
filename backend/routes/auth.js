@@ -2,103 +2,102 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const Admin = require('../models/Admin');
+const Unit = require('../models/Unit');
 const router = express.Router();
 
-// User login
+// Unified login for users and admins
 router.post('/login', async (req, res) => {
   try {
-    const { email, password, location } = req.body;
+    const { email, password, unit } = req.body;
 
     // Validate input
-    if (!email || !password || !location) {
+    if (!email || !password) {
       return res.status(400).json({
         success: false,
-        message: 'Email, senha e localização são obrigatórios'
+        message: 'Email/usuário e senha são obrigatórios'
       });
     }
 
-    // Find user by email and location
-    const user = await User.findOne({ 
-      email: email.toLowerCase(),
-      location: location,
-      isActive: true 
-    });
-
-    if (!user) {
-      return res.status(401).json({
-        success: false,
-        message: 'Credenciais inválidas ou usuário não encontrado para esta localização'
-      });
-    }
-
-    // Check if account is locked
-    if (user.isLocked) {
-      return res.status(423).json({
-        success: false,
-        message: 'Conta bloqueada devido a muitas tentativas de login. Tente novamente mais tarde.'
-      });
-    }
-
-    // Verify password
-    const isPasswordValid = await user.comparePassword(password);
-    
-    if (!isPasswordValid) {
-      // Increment login attempts
-      await user.incLoginAttempts();
+    // Try to find user using the new findByCredentials method (supports email or username)
+    try {
+      const user = await User.findByCredentials(email, password);
       
-      return res.status(401).json({
+      // Populate unit information
+      await user.populate('unit', 'name key isActive');
+      
+      // For non-admin users, unit is required
+        if (!user.isAdmin && !user.unit) {
+          return res.status(400).json({
+            success: false,
+            message: 'Unidade é obrigatória para usuários regulares'
+          });
+        }
+
+        // Reset login attempts on successful login
+        if (user.loginAttempts && user.loginAttempts > 0) {
+          await user.resetLoginAttempts();
+        }
+
+        // Update last login
+        user.lastLogin = new Date();
+        await user.save();
+
+        // Generate JWT token
+        const token = jwt.sign(
+          { 
+            userId: user._id,
+            email: user.email,
+            username: user.username,
+            unit: user.unit ? user.unit.key : null,
+            unitId: user.unit ? user.unit._id : null,
+            isAdmin: user.isAdmin,
+            adminRole: user.isAdmin ? user.adminRole : null,
+            type: user.isAdmin ? 'admin' : 'user'
+          },
+          process.env.JWT_SECRET || 'your-secret-key',
+          { expiresIn: '24h' }
+        );
+
+        // Return user data (excluding sensitive information)
+        const userData = {
+          _id: user._id,
+          name: user.fullName,
+          email: user.email,
+          username: user.username,
+          unit: user.unit ? {
+            _id: user.unit._id,
+            name: user.unit.name,
+            key: user.unit.key,
+            isActive: user.unit.isActive
+          } : null,
+          lastLogin: user.lastLogin,
+          isAdmin: user.isAdmin || false,
+          adminRole: user.isAdmin ? user.adminRole : null
+        };
+
+        res.json({
+          success: true,
+          message: 'Login realizado com sucesso',
+          user: userData,
+          token
+        });
+
+      } catch (authError) {
+        return res.status(401).json({
+          success: false,
+          message: 'Credenciais inválidas'
+        });
+      }
+
+    } catch (error) {
+      console.error('Login error:', error);
+      res.status(500).json({
         success: false,
-        message: 'Credenciais inválidas'
+        message: 'Erro interno do servidor'
       });
     }
-
-    // Reset login attempts on successful login
-    if (user.loginAttempts && user.loginAttempts > 0) {
-      await user.updateOne({
-        $unset: { loginAttempts: 1, lockUntil: 1 }
-      });
-    }
-
-    // Update last login
-    user.lastLogin = new Date();
-    await user.save();
-
-    // Generate JWT token
-    const token = jwt.sign(
-      { 
-        userId: user._id,
-        email: user.email,
-        location: user.location,
-        type: 'user'
-      },
-      process.env.JWT_SECRET || 'your-secret-key',
-      { expiresIn: '24h' }
-    );
-
-    // Return user data (excluding sensitive information)
-    const userData = {
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      location: user.location,
-      lastLogin: user.lastLogin
-    };
-
-    res.json({
-      success: true,
-      message: 'Login realizado com sucesso',
-      user: userData,
-      token
-    });
-
-  } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Erro interno do servidor'
-    });
-  }
-});
+  });
 
 // User logout (optional - mainly for token invalidation if implemented)
 router.post('/logout', async (req, res) => {
@@ -133,7 +132,7 @@ router.get('/verify', async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
     
     // Check if user still exists and is active
-    const user = await User.findById(decoded.userId).select('-password');
+    const user = await User.findById(decoded.userId).select('-password').populate('unit', 'name key isActive');
     
     if (!user || !user.isActive) {
       return res.status(401).json({
@@ -146,9 +145,17 @@ router.get('/verify', async (req, res) => {
       success: true,
       user: {
         _id: user._id,
-        name: user.name,
+        name: user.fullName,
         email: user.email,
-        location: user.location
+        username: user.username,
+        unit: user.unit ? {
+          _id: user.unit._id,
+          name: user.unit.name,
+          key: user.unit.key,
+          isActive: user.unit.isActive
+        } : null,
+        isAdmin: user.isAdmin,
+        adminRole: user.adminRole
       }
     });
 

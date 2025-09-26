@@ -47,22 +47,22 @@ const Contato = () => {
     {
       icon: 'ph-map-pin',
       title: 'Endereço',
-      content: 'Rua das Delícias, 123\nCentro - São Paulo/SP\nCEP: 01234-567'
+      content: 'Rua Anezia Mendes, 246\nJaboatão dos Guararapes-PE\nCEP: 54325-480'
     },
     {
       icon: 'ph-phone',
       title: 'Telefone',
-      content: '(11) 3456-7890\n(11) 98765-4321'
+      content: '(81) 99434-6925'
     },
     {
       icon: 'ph-envelope',
       title: 'Email',
-      content: 'contato@bondegusto.com.br\nreservas@bondegusto.com.br'
+      content: 'administrativo@bondegusto.onmicrosoft.com'
     },
     {
       icon: 'ph-clock',
       title: 'Horário de Funcionamento',
-      content: 'Segunda a Quinta: 11h às 23h\nSexta e Sábado: 11h às 24h\nDomingo: 11h às 22h'
+      content: 'Segunda a Sexta: 11h às 23h'
     }
   ];
 

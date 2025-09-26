@@ -3,24 +3,24 @@ import React from 'react';
 const Sobre = () => {
   const values = [
     {
-      icon: 'ph-heart',
-      title: 'Paixão',
-      description: 'Fazemos tudo com amor e dedicação, desde a seleção dos ingredientes até o atendimento ao cliente.'
+      icon: 'ph-seal-check',
+      title: 'Qualidade',
+      description: 'Garantir a alta qualidade dos alimentos e serviços oferecidos, com acompanhamento de profissionais capacitados, superando as expectativasdos nossos clientes.'
     },
     {
-      icon: 'ph-medal',
-      title: 'Qualidade',
-      description: 'Comprometemo-nos com a excelência em cada prato, utilizando apenas os melhores ingredientes.'
+      icon: 'ph-recycle',
+      title: 'Sustentabilidade',
+      description: 'Adotar práticas sustentáveis em toda a cadeia de produção, desde a escolha dos fornecedores até a gestão de resíduos.'
     },
     {
       icon: 'ph-handshake',
-      title: 'Tradição',
-      description: 'Preservamos receitas familiares e técnicas culinárias tradicionais passadas de geração em geração.'
+      title: 'Agilidade e compromisso',
+      description: 'Garantir prazos de entrega e agilidade nas ações.'
     },
     {
-      icon: 'ph-leaf',
-      title: 'Sustentabilidade',
-      description: 'Valorizamos fornecedores locais e práticas sustentáveis em nossa operação diária.'
+      icon: 'ph-heartbeat',
+      title: 'Saúde e Bem-estar',
+      description: 'Promover a saúde e o bem-estar dos colaboradores, oferecendo refeições equilibradas, nutritivas e com alta segurança.'
     }
   ];
 
@@ -78,13 +78,12 @@ const Sobre = () => {
               Quem Somos
             </h2>
             <p className="text-lg text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">
-              O Bondegusto é mais que um restaurante - é um lugar onde tradições culinárias se encontram 
-              com a inovação contemporânea. Desde 2003, nossa missão é proporcionar experiências 
-              gastronômicas únicas que despertam os sentidos e criam memórias afetivas.
-            </p>
-            <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
-              Acreditamos que uma boa refeição vai além do sabor: é sobre o ambiente, o atendimento 
-              e a conexão humana que se cria ao redor da mesa.
+               Somos uma empresa comprometida em fornecer alimentos de alta qualidade e
+                segurança, seja por meio de transporte ou preparo no local, atendendo a
+                ambientes corporativos e industriais. Nossa missão é garantir refeições
+                saborosas e nutritivas, preservando o autêntico sabor caseiro sem
+                comprometer os mais elevados padrões de excelência e higiene.
+
             </p>
           </div>
           <div className="relative">
@@ -105,8 +104,10 @@ const Sobre = () => {
           </div>
           <h3 className="text-2xl font-bold text-slate-800 dark:text-white mb-4">Missão</h3>
           <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
-            Oferecer experiências gastronômicas excepcionais, combinando tradição culinária com 
-            inovação, em um ambiente acolhedor que celebra a cultura da boa mesa.
+            Fornecer refeições de qualidade sem perder a característica de comida
+            caseira, sendo transportada ou in loco, promovendo o bem-estar e a satisfação
+            dos nossos clientes, contribuindo para um ambiente de trabalho mais saudável e
+            produtivo.
           </p>
         </div>
         
@@ -116,8 +117,10 @@ const Sobre = () => {
           </div>
           <h3 className="text-2xl font-bold text-slate-800 dark:text-white mb-4">Visão</h3>
           <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
-            Ser reconhecido como referência em gastronomia regional, expandindo nossa presença 
-            e mantendo a excelência que nos caracteriza há mais de duas décadas.
+            Ser reconhecida como a empresa padrão em soluções alimentares para o
+            ambiente corporativo, de forma segura, destacando-se pela excelência no serviço,
+            inovação e responsabilidade social.
+
           </p>
         </div>
         
@@ -156,12 +159,11 @@ const Sobre = () => {
       </section>
 
       {/* Timeline */}
-      <section>
+      {/* <section>
         <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white text-center mb-12">
           Nossa História
         </h2>
         <div className="relative">
-          {/* Timeline Line */}
           <div className="absolute left-1/2 transform -translate-x-1/2 w-1 bg-primary/20 h-full hidden md:block"></div>
           
           <div className="space-y-8">
@@ -179,7 +181,6 @@ const Sobre = () => {
                   </div>
                 </div>
                 
-                {/* Timeline Dot */}
                 <div className="hidden md:flex w-2/12 justify-center">
                   <div className="w-4 h-4 bg-primary rounded-full border-4 border-white dark:border-slate-900 shadow-lg"></div>
                 </div>
@@ -189,7 +190,7 @@ const Sobre = () => {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Team
       <section>

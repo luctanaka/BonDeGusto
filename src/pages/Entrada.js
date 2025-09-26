@@ -36,15 +36,21 @@ const Entrada = () => {
               Nossa História
             </h2>
             <p className="text-lg text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">
-              Há mais de 20 anos, o Bondegusto tem sido sinônimo de qualidade e tradição culinária. 
-              Nascemos com a missão de oferecer pratos autênticos que despertam memórias afetivas 
-              e criam novos momentos especiais.
+               Com 12 anos de experiência no mercado de refeições coletivas, dedicamo-nos a
+              oferecer serviços de alta qualidade, sempre priorizando a satisfação e o bem-estar
+              de nossos clientes. A partir de 2024, sob nova administração, buscamos como nosso
+              compromisso além da alimentação: Buscamos proporcionar uma experiência  
+              resgatando o sabor caseiro em cada refeição.
             </p>
             <p className="text-lg text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
-              Cada receita é cuidadosamente preparada com ingredientes frescos e selecionados, 
-              mantendo o sabor caseiro que nos tornou referência na região.
+               Além disso, zelamos rigorosamente
+              pela segurança alimentar, garantindo não apenas refeições saborosas, mas também
+              seguras e nutritivas. Cada detalhe é pensado com carinho, pois acreditamos que a
+              comida tem o poder de conectar, confortar e transformar momentos em lembranças
+              especiais.
+
             </p>
-            <div className="grid grid-cols-3 gap-4 text-center">
+            {/* <div className="grid grid-cols-3 gap-4 text-center">
               <div className="p-4">
                 <div className="text-3xl font-bold text-primary mb-2">20+</div>
                 <div className="text-sm text-slate-600 dark:text-slate-400">Anos de Tradição</div>
@@ -57,7 +63,7 @@ const Entrada = () => {
                 <div className="text-3xl font-bold text-primary mb-2">100+</div>
                 <div className="text-sm text-slate-600 dark:text-slate-400">Pratos Especiais</div>
               </div>
-            </div>
+            </div> */}
           </div>
           <div className="relative h-64 md:h-auto">
             <img 
@@ -76,9 +82,9 @@ const Entrada = () => {
           <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
             <i className="ph ph-chef-hat text-3xl text-primary"></i>
           </div>
-          <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-3">Chefs Experientes</h3>
+          <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-3">Time Experiente</h3>
           <p className="text-slate-600 dark:text-slate-300">
-            Nossa equipe de chefs possui décadas de experiência em culinária tradicional e contemporânea.
+            Nossa time possui experiência em culinária tradicional e contemporânea.
           </p>
         </div>
         

@@ -81,12 +81,16 @@ const adminRoutes = require('./routes/admin');
 const authRoutes = require('./routes/auth');
 const menuRoutes = require('./routes/menu');
 const avaliacaoRoutes = require('./routes/avaliacoes');
+const restaurantRoutes = require('./routes/restaurants');
+const unitRoutes = require('./routes/units');
 
 // Mount routes
 app.use('/api/admin', adminRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/menu', menuRoutes);
 app.use('/api/avaliacoes', avaliacaoRoutes);
+app.use('/api/restaurants', restaurantRoutes);
+app.use('/api/units', unitRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

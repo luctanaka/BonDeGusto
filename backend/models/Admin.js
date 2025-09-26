@@ -49,6 +49,11 @@ const adminSchema = new mongoose.Schema({
       analytics: { type: Boolean, default: true }
     }
   },
+  restaurant: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Restaurant',
+    required: false // Optional - if null, admin has access to all restaurants
+  },
   isActive: {
     type: Boolean,
     default: true

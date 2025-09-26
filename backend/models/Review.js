@@ -33,6 +33,11 @@ const reviewSchema = new mongoose.Schema({
   ipAddress: {
     type: String,
     required: true
+  },
+  unit: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Unit',
+    required: [true, 'Unit is required']
   }
 }, {
   timestamps: true, // Adds createdAt and updatedAt fields

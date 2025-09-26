@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import adminService from '../services/adminService';
+import useUnits from '../hooks/useUnits';
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -18,7 +19,7 @@ const UserManagement = () => {
     name: '',
     email: '',
     password: '',
-    location: '',
+    unit: '',
     phone: '',
     isActive: true
   });
@@ -28,16 +29,7 @@ const UserManagement = () => {
     confirmPassword: ''
   });
 
-  const locations = [
-    { key: 'sao-paulo', name: 'São Paulo' },
-    { key: 'rio-de-janeiro', name: 'Rio de Janeiro' },
-    { key: 'belo-horizonte', name: 'Belo Horizonte' },
-    { key: 'brasilia', name: 'Brasília' },
-    { key: 'salvador', name: 'Salvador' },
-    { key: 'fortaleza', name: 'Fortaleza' },
-    { key: 'recife', name: 'Recife' },
-    { key: 'porto-alegre', name: 'Porto Alegre' }
-  ];
+  const { units, loading: loadingUnits } = useUnits();
 
   const fetchUsers = useCallback(async () => {
     try {
@@ -96,8 +88,8 @@ const UserManagement = () => {
       setError('Senha deve ter pelo menos 8 caracteres');
       return;
     }
-    if (!formData.location) {
-      setError('Localização é obrigatória');
+    if (!formData.unit) {
+      setError('Unidade é obrigatória');
       return;
     }
     
@@ -129,8 +121,8 @@ const UserManagement = () => {
       setError('Telefone é obrigatório');
       return;
     }
-    if (!formData.location) {
-      setError('Localização é obrigatória');
+    if (!formData.unit) {
+      setError('Unidade é obrigatória');
       return;
     }
     
@@ -177,9 +169,9 @@ const UserManagement = () => {
   const openEditModal = (user) => {
     setSelectedUser(user);
     setFormData({
-      name: user.name || user.firstName + ' ' + user.lastName || '',
+      name: user.name || '',
       email: user.email,
-      location: user.location,
+      unit: user.unit?._id || user.unit || '',
       phone: user.phone || '',
       isActive: user.isActive,
       password: ''
@@ -198,7 +190,7 @@ const UserManagement = () => {
       name: '',
       email: '',
       password: '',
-      location: '',
+      unit: '',
       phone: '',
       isActive: true
     });
@@ -214,11 +206,6 @@ const UserManagement = () => {
     setTimeout(() => {
       document.body.removeChild(toast);
     }, 3000);
-  };
-
-  const getLocationName = (locationKey) => {
-    const location = locations.find(loc => loc.key === locationKey);
-    return location ? location.name : locationKey;
   };
 
   const formatDate = (dateString) => {
@@ -254,7 +241,7 @@ const UserManagement = () => {
           </div>
           <div className="bg-purple-50 p-4 rounded-lg">
             <h3 className="text-sm font-medium text-purple-600">Por Localização</h3>
-            <p className="text-sm text-purple-800">{userStats.locationDistribution || 'N/A'}</p>
+            <p className="text-sm text-purple-800">{userStats.unitDistribution || 'N/A'}</p>
           </div>
         </div>
 
@@ -303,7 +290,7 @@ const UserManagement = () => {
                   Email
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Localização
+                  Unidade
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Status
@@ -326,7 +313,7 @@ const UserManagement = () => {
                     <div className="text-sm text-gray-900">{user.email}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">{getLocationName(user.location)}</div>
+                    <div className="text-sm text-gray-900">{user.unit?.name || 'N/A'}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
@@ -465,20 +452,24 @@ const UserManagement = () => {
                 </div>
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Localização *
+                    Unidade *
                   </label>
                   <select
                     required
-                    value={formData.location}
-                    onChange={(e) => setFormData({...formData, location: e.target.value})}
+                    value={formData.unit}
+                    onChange={(e) => setFormData({...formData, unit: e.target.value})}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
-                    <option value="">Selecione uma localização</option>
-                    {locations.map((location) => (
-                      <option key={location.key} value={location.key}>
-                        {location.name}
-                      </option>
-                    ))}
+                    <option value="">Selecione uma unidade</option>
+                    {loadingUnits ? (
+                      <option disabled>Carregando...</option>
+                    ) : (
+                      units.map((unit) => (
+                        <option key={unit._id} value={unit._id}>
+                          {unit.name}
+                        </option>
+                      ))
+                    )}
                   </select>
                 </div>
                 <div className="mb-4">
@@ -564,20 +555,24 @@ const UserManagement = () => {
                 </div>
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Localização *
+                    Unidade *
                   </label>
                   <select
                     required
-                    value={formData.location}
-                    onChange={(e) => setFormData({...formData, location: e.target.value})}
+                    value={formData.unit}
+                    onChange={(e) => setFormData({...formData, unit: e.target.value})}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
-                    <option value="">Selecione uma localização</option>
-                    {locations.map((location) => (
-                      <option key={location.key} value={location.key}>
-                        {location.name}
-                      </option>
-                    ))}
+                    <option value="">Selecione uma unidade</option>
+                    {loadingUnits ? (
+                      <option disabled>Carregando...</option>
+                    ) : (
+                      units.map((unit) => (
+                        <option key={unit._id} value={unit._id}>
+                          {unit.name}
+                        </option>
+                      ))
+                    )}
                   </select>
                 </div>
                 <div className="mb-4">

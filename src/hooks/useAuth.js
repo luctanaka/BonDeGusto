@@ -15,26 +15,36 @@ export const useAuth = () => {
     }
   }, [currentUser]);
 
-  const login = async (email, password, location) => {
+  const login = async (email, password, unit) => {
     try {
-      const data = await apiClient.post('/auth/login', { email, password, location });
+      const data = await apiClient.post('/auth/login', { email, password, unit });
 
       const userData = {
         id: data.user._id,
         email: data.user.email,
+        username: data.user.username,
         name: data.user.name,
-        location: data.user.location,
+        unit: data.user.unit,
         loginTime: new Date().toISOString(),
-        token: data.token
+        token: data.token,
+        isAdmin: data.user.isAdmin || false,
+        adminRole: data.user.adminRole || null
       };
       
       setCurrentUser(userData);
       localStorage.setItem('currentUser', JSON.stringify(userData));
       
-      showSuccessMessage(`Bem-vindo, ${userData.name}! Login realizado com sucesso em ${getLocationName(location)}.`);
-      
-      // Redirect to root path after successful login
-      window.location.href = '/';
+      // Show appropriate success message based on user type
+      if (userData.isAdmin) {
+        showSuccessMessage(`Bem-vindo, ${userData.name}! Login de administrador realizado com sucesso.`);
+        // Redirect to admin dashboard for admin users
+        window.location.href = '/#admin';
+      } else {
+        const unitName = userData.unit ? userData.unit.name : 'sua unidade';
+        showSuccessMessage(`Bem-vindo, ${userData.name}! Login realizado com sucesso em ${unitName}.`);
+        // Redirect to root path for regular users
+        window.location.href = '/';
+      }
       
       return { success: true, user: userData };
     } catch (error) {
@@ -49,6 +59,12 @@ export const useAuth = () => {
     
     // Show success message
     showSuccessMessage('Logout realizado com sucesso!');
+    
+    // Redirect to home page
+    setTimeout(() => {
+      window.location.hash = 'entrada';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 500);
   };
 
   const showSuccessMessage = (message) => {
@@ -79,24 +95,25 @@ export const useAuth = () => {
     }, 3000);
   };
 
-  const getLocationName = (locationKey) => {
-    const locations = {
-      'sao-paulo': 'São Paulo - SP',
-      'rio-de-janeiro': 'Rio de Janeiro - RJ',
-      'belo-horizonte': 'Belo Horizonte - MG',
-      'brasilia': 'Brasília - DF',
-      'salvador': 'Salvador - BA',
-      'fortaleza': 'Fortaleza - CE',
-      'recife': 'Recife - PE',
-      'porto-alegre': 'Porto Alegre - RS'
-    };
-    return locations[locationKey] || locationKey;
+  // Utility functions for admin privileges
+  const isAdmin = () => {
+    return currentUser?.isAdmin === true;
+  };
+
+  const isSuperAdmin = () => {
+    return currentUser?.isAdmin === true && currentUser?.adminRole === 'super_admin';
+  };
+
+  const hasAdminAccess = () => {
+    return isAdmin();
   };
 
   return {
     currentUser,
     login,
     logout,
-    getLocationName
+    isAdmin,
+    isSuperAdmin,
+    hasAdminAccess
   };
 };

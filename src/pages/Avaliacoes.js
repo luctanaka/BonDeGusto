@@ -2,18 +2,23 @@ import React, { useState } from 'react';
 import { WifiX, CheckCircle } from '@phosphor-icons/react';
 import reviewService from '../services/reviewService';
 import useDatabase from '../hooks/useDatabase';
+import { useAuth } from '../hooks/useAuth';
+import LoginModal from '../components/LoginModal';
 
 const Avaliacoes = () => {
   const [userRating, setUserRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [reviewForm, setReviewForm] = useState({
     name: '',
-    email: '',
+    turno: '',
     comment: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
+  // Authentication hook
+  const { currentUser } = useAuth();
   
   // Database connection hook
   const { isConnected, isLoading: dbLoading, getStatusMessage, retryConnection } = useDatabase();
@@ -41,12 +46,18 @@ const Avaliacoes = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // Check if user is authenticated
+    if (!currentUser) {
+      setIsLoginModalOpen(true);
+      return;
+    }
+    
     if (userRating === 0) {
       setSubmitStatus('error');
       return;
     }
     
-    if (!reviewForm.name || !reviewForm.email || !reviewForm.comment) {
+    if (!reviewForm.name || !reviewForm.turno || !reviewForm.comment) {
       setSubmitStatus('error');
       return;
     }
@@ -61,8 +72,11 @@ const Avaliacoes = () => {
 
     try {
       const reviewData = {
-        ...reviewForm,
-        rating: userRating
+        name: reviewForm.name,
+        turno: reviewForm.turno,
+        comment: reviewForm.comment,
+        rating: userRating,
+        unit: currentUser.unit._id // Include user's unit
       };
       
       const result = await reviewService.submitReview(reviewData);
@@ -71,7 +85,7 @@ const Avaliacoes = () => {
         setSubmitStatus('success');
         
         // Reset form on success
-        setReviewForm({ name: '', email: '', comment: '' });
+        setReviewForm({ name: '', turno: '', comment: '' });
         setUserRating(0);
         
         // Reviews would be reloaded here in a full implementation
@@ -149,14 +163,51 @@ const Avaliacoes = () => {
         </p>
       </div>
 
-      <div className="max-w-2xl mx-auto">
-        {/* Review Form */}
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-8">
-            <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-6">
-              Deixe sua Avaliação
-            </h2>
-            
-            <form onSubmit={handleSubmit} className="space-y-6">
+      {currentUser && (
+        <div className="max-w-2xl mx-auto">
+          {/* Review Form */}
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-8">
+              <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-6">
+                Deixe sua Avaliação
+              </h2>
+                <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Nome */}
+              <div>
+                <label htmlFor="reviewName" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                  Nome *
+                </label>
+                <input
+                  type="text"
+                  id="reviewName"
+                  name="name"
+                  value={reviewForm.name}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
+                  placeholder="Digite seu nome"
+                />
+              </div>
+
+              {/* Turno */}
+              <div>
+                <label htmlFor="reviewTurno" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                  Turno *
+                </label>
+                <select
+                  id="reviewTurno"
+                  name="turno"
+                  value={reviewForm.turno}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
+                >
+                  <option value="">Selecione o turno</option>
+                  <option value="Manhã">Manhã</option>
+                  <option value="Diurno">Diurno</option>
+                  <option value="Noturno">Noturno</option>
+                </select>
+              </div>
+
               {/* Rating Stars */}
               <div>
                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">
@@ -168,40 +219,6 @@ const Avaliacoes = () => {
                     Você avaliou com {userRating} estrela{userRating > 1 ? 's' : ''}
                   </p>
                 )}
-              </div>
-              
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="reviewName" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                    Nome *
-                  </label>
-                  <input
-                    type="text"
-                    id="reviewName"
-                    name="name"
-                    value={reviewForm.name}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
-                    placeholder="Seu nome"
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="reviewEmail" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                    Email *
-                  </label>
-                  <input
-                    type="email"
-                    id="reviewEmail"
-                    name="email"
-                    value={reviewForm.email}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
-                    placeholder="seu@email.com"
-                  />
-                </div>
               </div>
               
               <div>
@@ -254,6 +271,13 @@ const Avaliacoes = () => {
             </form>
         </div>
       </div>
+      )}
+      
+      {/* Modal de Login */}
+      <LoginModal 
+        isOpen={isLoginModalOpen} 
+        onClose={() => setIsLoginModalOpen(false)} 
+      />
     </div>
   );
 };

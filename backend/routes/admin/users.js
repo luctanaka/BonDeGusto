@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
       page = 1,
       limit = 10,
       search = '',
-      location = '',
+      unit = '',
       isActive = '',
       sortBy = 'createdAt',
       sortOrder = 'desc'
@@ -34,8 +34,8 @@ router.get('/', async (req, res) => {
       ];
     }
     
-    if (location) {
-      filter.location = location;
+    if (unit) {
+      filter.unit = unit;
     }
     
     if (isActive !== '') {
@@ -124,7 +124,7 @@ router.post('/', async (req, res) => {
       name,
       firstName,
       lastName,
-      location,
+      unit,
       phone
     } = req.body;
 
@@ -141,10 +141,10 @@ router.post('/', async (req, res) => {
     }
 
     // Validation
-    if (!email || !password || !finalFirstName || !finalLastName || !location || !phone) {
+    if (!email || !password || !finalFirstName || !finalLastName || !unit || !phone) {
       return res.status(400).json({
         success: false,
-        message: 'Email, password, name, phone, and location are required.'
+        message: 'Email, password, name, phone, and unit are required.'
       });
     }
 
@@ -170,7 +170,7 @@ router.post('/', async (req, res) => {
       password,
       firstName: finalFirstName,
       lastName: finalLastName,
-      location,
+      unit,
       phone,
       createdBy: req.admin._id,
       emailVerified: true // Admin-created accounts are pre-verified
@@ -185,7 +185,7 @@ router.post('/', async (req, res) => {
       firstName: user.firstName,
       lastName: user.lastName,
       fullName: user.fullName,
-      location: user.location,
+      unit: user.unit,
       phone: user.phone,
       isActive: user.isActive,
       emailVerified: user.emailVerified,
@@ -228,7 +228,7 @@ router.put('/:id', async (req, res) => {
       name,
       firstName,
       lastName,
-      location,
+      unit,
       phone,
       isActive
     } = req.body;
@@ -268,7 +268,7 @@ router.put('/:id', async (req, res) => {
     // Update fields
     if (finalFirstName) user.firstName = finalFirstName;
     if (finalLastName) user.lastName = finalLastName;
-    if (location) user.location = location;
+    if (unit) user.unit = unit;
     if (phone !== undefined) user.phone = phone;
     if (isActive !== undefined) user.isActive = isActive;
 
@@ -280,7 +280,7 @@ router.put('/:id', async (req, res) => {
       firstName: user.firstName,
       lastName: user.lastName,
       fullName: user.fullName,
-      location: user.location,
+      unit: user.unit,
       phone: user.phone,
       isActive: user.isActive,
       emailVerified: user.emailVerified,
@@ -402,12 +402,12 @@ router.delete('/:id', async (req, res) => {
 // @access  Private (Admin only)
 router.get('/stats/overview', async (req, res) => {
   try {
-    const [totalUsers, activeUsers, inactiveUsers, locationStats] = await Promise.all([
+    const [totalUsers, activeUsers, inactiveUsers, unitStats] = await Promise.all([
       User.countDocuments(),
       User.countDocuments({ isActive: true }),
       User.countDocuments({ isActive: false }),
       User.aggregate([
-        { $group: { _id: '$location', count: { $sum: 1 } } },
+        { $group: { _id: '$unit', count: { $sum: 1 } } },
         { $sort: { count: -1 } }
       ])
     ]);
@@ -418,7 +418,7 @@ router.get('/stats/overview', async (req, res) => {
         totalUsers,
         activeUsers,
         inactiveUsers,
-        locationStats
+        unitStats
       }
     });
 

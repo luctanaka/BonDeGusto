@@ -24,7 +24,7 @@ class ReviewService {
   async submitReview(reviewData) {
     try {
       // Validate required fields
-      const requiredFields = ['name', 'email', 'rating', 'comment'];
+      const requiredFields = ['name', 'email', 'rating', 'comment', 'unit'];
       for (const field of requiredFields) {
         if (!reviewData[field]) {
           throw new Error(`Campo obrigatório: ${field}`);
@@ -47,7 +47,8 @@ class ReviewService {
         name: reviewData.name.trim(),
         email: reviewData.email.trim().toLowerCase(),
         rating: parseInt(reviewData.rating),
-        comment: reviewData.comment.trim()
+        comment: reviewData.comment.trim(),
+        unit: reviewData.unit
       };
 
       const response = await apiClient.post('/reviews', sanitizedData);

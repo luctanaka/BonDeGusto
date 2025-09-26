@@ -15,34 +15,42 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 8
   },
-  firstName: {
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    minlength: 3,
+    maxlength: 30
+  },
+  name: {
     type: String,
     required: true,
     trim: true,
     maxlength: 50
   },
-  lastName: {
-    type: String,
-    required: true,
-    trim: true,
-    maxlength: 50
+  unit: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Unit',
+    required: function() {
+      return !this.isAdmin; // Unit is only required for non-admin users
+    }
   },
-  location: {
+  isAdmin: {
+    type: Boolean,
+    default: false
+  },
+  adminRole: {
     type: String,
-    required: true,
-    enum: [
-      'sao-paulo',
-      'rio-de-janeiro', 
-      'belo-horizonte',
-      'brasilia',
-      'salvador',
-      'fortaleza',
-      'recife',
-      'porto-alegre'
-    ]
+    enum: ['admin', 'super_admin'],
+    default: 'admin',
+    required: function() {
+      return this.isAdmin; // Role is required only for admin users
+    }
   },
   phone: {
     type: String,
+    required: true,
     trim: true,
     match: [/^\+?[1-9]\d{1,14}$/, 'Please enter a valid phone number']
   },
@@ -72,7 +80,7 @@ const userSchema = new mongoose.Schema({
   },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Admin',
+    ref: 'User',
     required: true
   }
 }, {
@@ -148,10 +156,13 @@ userSchema.methods.resetLoginAttempts = function() {
   });
 };
 
-// Static method to find by credentials
-userSchema.statics.findByCredentials = async function(email, password) {
+// Static method to find by credentials (email or username)
+userSchema.statics.findByCredentials = async function(emailOrUsername, password) {
   const user = await this.findOne({
-    email: email,
+    $or: [
+      { email: emailOrUsername },
+      { username: emailOrUsername }
+    ],
     isActive: true
   });
   
@@ -180,8 +191,9 @@ userSchema.statics.findByCredentials = async function(email, password) {
 
 // Index for performance
 userSchema.index({ email: 1 });
+userSchema.index({ username: 1 });
 userSchema.index({ isActive: 1 });
-userSchema.index({ location: 1 });
+userSchema.index({ unit: 1 });
 userSchema.index({ createdBy: 1 });
 
 module.exports = mongoose.model('User', userSchema);

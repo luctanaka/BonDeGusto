@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAdminAuth } from '../hooks/useAdminAuth';
 import MenuManagement from '../components/MenuManagement';
 import ReviewManagement from '../components/ReviewManagement';
@@ -14,17 +14,7 @@ const AdminDashboard = () => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const authenticated = isAuthenticated();
-    if (authenticated) {
-      setShowLogin(false);
-      loadDashboardStats();
-    } else {
-      setShowLogin(true);
-    }
-  }, [adminUser, isAuthenticated]);
-
-  const loadDashboardStats = async () => {
+  const loadDashboardStats = useCallback(async () => {
     setLoading(true);
     try {
       const dashboardStats = await adminService.getDashboardStats();
@@ -34,7 +24,16 @@ const AdminDashboard = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (adminUser && isAuthenticated) {
+      setShowLogin(false);
+      loadDashboardStats();
+    } else {
+      setShowLogin(true);
+    }
+  }, [adminUser, isAuthenticated, loadDashboardStats]);
 
   const handleLoginSuccess = () => {
     setShowLogin(false);

@@ -5,7 +5,8 @@ const router = express.Router();
 // Get all approved reviews
 router.get('/', async (req, res) => {
   try {
-    const reviews = await Review.find({ status: 'approved' })
+    const reviews = await Review.find({ isApproved: true })
+      .populate('unit', 'name')
       .sort({ createdAt: -1 })
       .limit(50);
     res.json(reviews);
@@ -18,23 +19,25 @@ router.get('/', async (req, res) => {
 // Create new review
 router.post('/', async (req, res) => {
   try {
-    const { nome, email, nota, comentario } = req.body;
+    const { name, email, rating, comment, unit } = req.body;
     
     // Validation
-    if (!nome || !email || !nota || !comentario) {
+    if (!name || !email || !rating || !comment || !unit) {
       return res.status(400).json({ error: 'All fields are required' });
     }
     
-    if (nota < 1 || nota > 5) {
+    if (rating < 1 || rating > 5) {
       return res.status(400).json({ error: 'Rating must be between 1 and 5' });
     }
     
     const review = new Review({
-      nome,
+      name,
       email,
-      nota,
-      comentario,
-      status: 'pending' // Reviews need approval
+      rating,
+      comment,
+      unit,
+      ipAddress: req.ip || req.connection.remoteAddress || 'unknown',
+      isApproved: false // Reviews need approval
     });
     
     await review.save();
@@ -49,14 +52,14 @@ router.post('/', async (req, res) => {
 router.get('/stats', async (req, res) => {
   try {
     const stats = await Review.aggregate([
-      { $match: { status: 'approved' } },
+      { $match: { isApproved: true } },
       {
         $group: {
           _id: null,
           totalReviews: { $sum: 1 },
-          averageRating: { $avg: '$nota' },
+          averageRating: { $avg: '$rating' },
           ratingDistribution: {
-            $push: '$nota'
+            $push: '$rating'
           }
         }
       }

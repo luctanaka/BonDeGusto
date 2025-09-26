@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import useUnits from '../hooks/useUnits';
 
 const LoginModal = ({ isOpen, onClose, onLogin }) => {
   const [formData, setFormData] = useState({
-    location: '',
+    unit: '',
     email: '',
     password: ''
   });
@@ -10,17 +11,8 @@ const LoginModal = ({ isOpen, onClose, onLogin }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
-
-  const locations = [
-    { value: 'sao-paulo', label: 'São Paulo - SP' },
-    { value: 'rio-de-janeiro', label: 'Rio de Janeiro - RJ' },
-    { value: 'belo-horizonte', label: 'Belo Horizonte - MG' },
-    { value: 'brasilia', label: 'Brasília - DF' },
-    { value: 'salvador', label: 'Salvador - BA' },
-    { value: 'fortaleza', label: 'Fortaleza - CE' },
-    { value: 'recife', label: 'Recife - PE' },
-    { value: 'porto-alegre', label: 'Porto Alegre - RS' }
-  ];
+  
+  const { units, loading: unitsLoading } = useUnits();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -28,17 +20,15 @@ const LoginModal = ({ isOpen, onClose, onLogin }) => {
       ...prev,
       [name]: value
     }));
+    
     // Clear error when user starts typing
     if (error) setError('');
   };
 
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!formData.location) {
-      setError('Por favor, selecione sua localização');
-      return;
-    }
     
     if (!formData.email) {
       setError('Por favor, preencha seu email');
@@ -50,13 +40,18 @@ const LoginModal = ({ isOpen, onClose, onLogin }) => {
       return;
     }
 
+    // Unit is optional - the backend will determine if user is admin
+    if (!formData.unit) {
+      // Allow login without unit - backend will handle admin detection
+    }
+
     setIsLoading(true);
     setError('');
 
     try {
-      await onLogin(formData.email, formData.password, formData.location);
-      // Reset form
-      setFormData({ location: '', email: '', password: '' });
+      await onLogin(formData.email, formData.password, formData.unit || null);
+      
+      setFormData({ unit: '', email: '', password: '' });
       onClose();
     } catch (err) {
       setError(err.message || 'Erro no login. Tente novamente.');
@@ -66,7 +61,7 @@ const LoginModal = ({ isOpen, onClose, onLogin }) => {
   };
 
   const handleClose = () => {
-    setFormData({ location: '', email: '', password: '' });
+    setFormData({ unit: '', email: '', password: '' });
     setError('');
     setShowPassword(false);
     onClose();
@@ -82,7 +77,9 @@ const LoginModal = ({ isOpen, onClose, onLogin }) => {
         <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-md transform transition-all">
           <div className="p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-slate-800 dark:text-white">Login</h2>
+              <h2 className="text-2xl font-bold text-slate-800 dark:text-white">
+                Login
+              </h2>
               <button 
                 onClick={handleClose}
                 className="p-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-full transition-colors"
@@ -91,45 +88,47 @@ const LoginModal = ({ isOpen, onClose, onLogin }) => {
               </button>
             </div>
             
+
+            
             <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Location Selection */}
+              {/* Unit Selection */}
               <div>
-                <label htmlFor="location" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                  Selecione sua localização
+                <label htmlFor="unit" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                  Unidade
                 </label>
                 <select 
-                  id="location"
-                  name="location"
-                  value={formData.location}
+                  id="unit"
+                  name="unit"
+                  value={formData.unit}
                   onChange={handleInputChange}
-                  required 
-                  className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
+                  disabled={unitsLoading}
+                  className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-slate-700 text-slate-900 dark:text-white disabled:opacity-50"
                 >
-                  <option value="">Escolha sua cidade</option>
-                  {locations.map(location => (
-                    <option key={location.value} value={location.value}>
-                      {location.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
+                  <option value="">{unitsLoading ? 'Carregando...' : 'Escolha sua unidade (opcional para admins)'}</option>
+                  {units.map(unit => (
+                      <option key={unit.key} value={unit.key}>
+                        {unit.displayName}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               
               {/* Email */}
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                  Email
-                </label>
-                <input 
-                  type="email" 
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  required 
-                  className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-slate-700 text-slate-900 dark:text-white" 
-                  placeholder="seu@email.com"
-                />
-              </div>
+               <div>
+                 <label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                   Email ou Nome de Usuário
+                 </label>
+                 <input 
+                   type="text" 
+                   id="email"
+                   name="email"
+                   value={formData.email}
+                   onChange={handleInputChange}
+                   required 
+                   placeholder="Digite seu email ou nome de usuário"
+                   className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
+                 />
+               </div>
               
               {/* Password */}
               <div>

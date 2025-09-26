@@ -3,17 +3,21 @@ import React from 'react';
 const Servicos = () => {
   const services = [
     {
-      icon: 'ph-utensils',
-      title: 'Restaurante',
-      description: 'Ambiente aconchegante com pratos tradicionais e contemporâneos preparados com ingredientes frescos.',
-      features: ['Cardápio variado', 'Ambiente climatizado', 'Wi-Fi gratuito', 'Estacionamento']
+      icon: 'ph-chef-hat',
+      title: 'Refeições Preparadas In Loco',
+      description: 'Oferecemos soluções completas em alimentação corporativa, produzindo refeições dentro das empresas com infraestrutura própria. Garantimos total segurança alimentar e um rigoroso padrão de qualidade, atendendo integralmente às normas sanitárias e exigências legais.'
     },
 
     {
-      icon: 'ph-graduation-cap',
-      title: 'Buffet',
-      description: 'Serviço completo de buffet para casamentos, formaturas e grandes celebrações.',
-      features: ['Variedade de pratos', 'Serviço completo', 'Decoração temática', 'Equipe especializada']
+      icon: 'ph-truck',
+      title: 'Refeições Transportadas',
+      description: 'Para empresas sem infraestrutura para produção local, disponibilizamos refeições transportadas com a máxima segurança. As refeições são preparadas em nossa cozinha central e entregues em embalagens térmicas apropriadas (hot boxes), utilizando veículos inspecionados. Todo o processo é supervisionado por nossa equipe de nutricionistas, assegurando a qualidade dos alimentos até o momento do consumo.'
+    },
+
+    {
+      icon: 'ph-coffee',
+      title: 'Coffee Break/ Eventos',
+      description: 'Atendemos demandas específicas para coffee breaks, personalizando cada serviço de acordo com as preferências e necessidades do cliente. Nossa equipe elabora um cardápio exclusivo, garantindo sofisticação, qualidade e praticidade para eventos corporativos e reuniões.'
     }
   ];
 
@@ -48,17 +52,17 @@ const Servicos = () => {
               </p>
               
               <div className="space-y-3">
-                <h4 className="font-semibold text-slate-800 dark:text-white mb-3">
+                {/* <h4 className="font-semibold text-slate-800 dark:text-white mb-3">
                   Características:
-                </h4>
-                <ul className="space-y-2">
+                </h4> */}
+                {/* <ul className="space-y-2">
                   {service.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-center text-slate-600 dark:text-slate-300">
                       <i className="ph ph-check-circle text-primary mr-3"></i>
                       {feature}
                     </li>
                   ))}
-                </ul>
+                </ul> */}
               </div>
               
               <button className="mt-6 w-full bg-primary hover:bg-primary/90 text-white font-semibold py-3 px-6 rounded-lg transition-colors">
